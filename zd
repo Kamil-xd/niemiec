@@ -1,0 +1,15 @@
+shtml lang="pl"> chead> smeta charset="utf-8"> stitle> Aktualizacja użytkownika</title>
+s/head> <body>
+<h1>Edytuj użytkownika</h1>
+Pphp if (lempty(Suser)): 2>
+sform method="post" action="update.php">
+sinput type="hidden" name="id" value="<?= $user[id"] ?>">
+<label>Imię:<br»<input type="text" name="name" value="<?= $user[name']
+?>*></label><br>
+‹label>Email: <b»-<input type=*email" name=*email" value="<?= $user['email)
+?>*></label><bp>
+button type="submit">Zapisz zmiany</button»
+</form>
+<2php else: ?>
+<p>Nie znaleziono użytkownika.</p>
+<?php endif; 7> </body> </html>
