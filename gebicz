@@ -1,0 +1,121 @@
+import java.io.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
+public class RejestrWydatkow {
+    static final String PLIK = "wydatki.txt";
+
+    public static void main(String[] args) {
+        Scanner wejscie = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("
+===== REJESTR WYDATKÓW =====");
+            System.out.println("1. Dodaj wydatek");
+            System.out.println("2. Pokaż historię");
+            System.out.println("3. Oblicz sumę");
+            System.out.println("4. Wyjdź");
+            System.out.print("Wybór: ");
+
+            String wybor = wejscie.nextLine();
+
+            switch (wybor) {
+                case "1": dodajWydatek(wejscie); break;
+                case "2": pokazHistorie(); break;
+                case "3": obliczSume(); break;
+                case "4": return;
+                default: System.out.println("Niepoprawna opcja.");
+            }
+        }
+    }
+
+    static void dodajWydatek(Scanner wejscie) {
+        try {
+            System.out.print("Opis wydatku: ");
+            String opis = wejscie.nextLine();
+
+            System.out.print("Kategoria: ");
+            String kategoria = wejscie.nextLine();
+
+            System.out.print("Kwota: ");
+            double kwota = Double.parseDouble(wejscie.nextLine());
+            if (kwota <= 0) throw new IllegalArgumentException("Kwota musi być większa od 0.");
+
+            String data = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+
+            FileWriter zapis = new FileWriter(PLIK, true);
+            zapis.write("[" + data + "] - Kategoria: " + kategoria + " - Kwota: " + kwota + " - Opis: " + opis + "
+");
+            zapis.close();
+
+            System.out.println("Zapisano.");
+        } catch (NumberFormatException e) {
+            System.out.println("Podano niepoprawną kwotę.");
+        } catch (Exception e) {
+            System.out.println("Błąd: " + e.getMessage());
+        } finally {
+            System.out.println("Operacja zakończona pomyślnie.");
+        }
+    }
+
+    static void pokazHistorie() {
+        try {
+            File plik = new File(PLIK);
+            if (!plik.exists()) {
+                plik.createNewFile();
+                System.out.println("Brak zapisanych wydatków.");
+                return;
+            }
+
+            BufferedReader czytaj = new BufferedReader(new FileReader(PLIK));
+            String linia;
+            boolean pusto = true;
+
+            while ((linia = czytaj.readLine()) != null) {
+                System.out.println(linia);
+                pusto = false;
+            }
+
+            if (pusto) System.out.println("Brak zapisanych wydatków.");
+
+            czytaj.close();
+        } catch (IOException e) {
+            System.out.println("Błąd podczas odczytu.");
+        } finally {
+            System.out.println("Operacja zakończona pomyślnie.");
+        }
+    }
+
+    static void obliczSume() {
+        double suma = 0;
+
+        try {
+            File plik = new File(PLIK);
+            if (!plik.exists()) {
+                System.out.println("Brak pliku z wydatkami.");
+                return;
+            }
+
+            BufferedReader czytaj = new BufferedReader(new FileReader(PLIK));
+            String linia;
+
+            while ((linia = czytaj.readLine()) != null) {
+                if (linia.contains("Kwota:")) {
+                    String[] czesci = linia.split("Kwota:");
+                    String liczba = czesci[1].trim().split(" ")[0];
+                    suma += Double.parseDouble(liczba);
+                }
+            }
+
+            czytaj.close();
+
+            System.out.printf("Łączna suma wydatków: %.2f zł
+", suma);
+        } catch (Exception e) {
+            System.out.println("Błąd danych: " + e.getMessage());
+        } finally {
+            System.out.println("Operacja zakończona pomyślnie.");
+        }
+    }
+}
