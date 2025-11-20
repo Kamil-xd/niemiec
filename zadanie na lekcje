@@ -1,0 +1,66 @@
+import java.util.*;
+public class Main {
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        System.out.print("Podaj liczbę zestawów do wylosowania: ");
+        int liczbaZestawow = 0;
+
+        while (true) {
+            try {
+                liczbaZestawow = Integer.parseInt(scanner.nextLine());
+                if (liczbaZestawow > 0) break;
+                System.out.println("Liczba musi być dodatnia. Spróbuj ponownie:");
+            } catch (NumberFormatException e) {
+                System.out.println("Błędna wartość. Spróbuj ponownie:");
+            }
+        }
+
+        int[][] zestawy = new int[liczbaZestawow][4];
+
+        for (int i = 0; i < liczbaZestawow; i++) {
+
+            List<Integer> liczby = new ArrayList<>();
+            for (int j = -15; j <= 15; j++) liczby.add(j);
+
+            Collections.shuffle(liczby, random);
+            for (int k = 0; k < 4; k++) {
+                zestawy[i][k] = liczby.get(k);
+            }
+        }
+
+        System.out.println("\nWylosowane zestawy:");
+
+        for (int i = 0; i < liczbaZestawow; i++) {
+            System.out.print("Zestaw " + (i + 1) + ": ");
+            System.out.println(Arrays.toString(zestawy[i]));
+        }
+
+        int[] wystapienia = new int[31];
+        int liczbyDodatnie = 0;
+        int liczbyUjemne = 0;
+        int zera = 0;
+
+        for (int[] zestaw : zestawy) {
+            for (int liczba : zestaw) {
+                if (liczba < 0) liczbyUjemne++;
+                if (liczba == 0) zera++;
+                if (liczba > 0) liczbyDodatnie++;
+                if (liczba >= -15 && liczba <= 15) {
+                    wystapienia[liczba+15]++;
+                }
+            }
+        }
+
+        System.out.println("\nIlość wystąpień liczb od -15 do 15:");
+        for (int i = 0; i <= 30; i++) {
+            System.out.println(i-15 + ": " + wystapienia[i]);
+        }
+
+        System.out.println("\nLiczba liczb dodatnich:  " + liczbyDodatnie);
+        System.out.println("\nLiczba liczb ujemnych: " + liczbyUjemne);
+        System.out.println("Liczba zer: " + zera);
+        scanner.close();
+    }
+}
