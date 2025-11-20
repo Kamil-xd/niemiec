@@ -1,0 +1,108 @@
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
+public class Main{
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("1.Dodaj wydatek");
+        System.out.println("2.Pokaż historię");
+        System.out.println("3.Oblicz sumę");
+        System.out.println("4.Wyjdź\n");
+
+        System.out.print("Wybierz: ");
+        int choice = sc.nextInt();
+        sc.nextLine();
+
+        switch(choice){
+            case 1:
+                System.out.print("nazwa: ");
+                String name = sc.nextLine();
+
+                System.out.print("kategoria: ");
+                String category = sc.nextLine();
+
+                System.out.print("kwota: ");
+                double price = sc.nextDouble();
+                sc.nextLine();
+
+                if(price <= 0){
+                    System.out.println("Kwota nie moze byc 0");
+                }else{
+                    LocalDateTime nowTime = LocalDateTime.now();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                    String saveDate = nowTime.format(formatter);
+
+                    try(FileWriter writer = new FileWriter("bill.txt", true)){
+                        String bill = "[" + saveDate + "] kategoria: " + category + ", kwota: " + price + ", nazwa: " +  name + "\n";
+                        writer.write(bill);
+                        System.out.println("zapisano");
+                    }catch(IOException e){
+                        System.out.println("blad " + e.getMessage());
+                    }
+                }
+                break;
+
+            case 2:
+                System.out.println("\nhistoria:");
+
+                try(java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader("bill.txt"))){
+                    String lineTxt;
+                    while((lineTxt = reader.readLine()) != null){
+                        System.out.println(lineTxt);
+                    }
+                }catch(IOException e){
+                    System.out.println("blad:" + e.getMessage());
+                }
+                break;
+
+            case 3:
+                System.out.println("\nsuma:");
+                double sum = 0;
+
+                try(java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader("bill.txt"))){
+                    String lineTxt;
+
+                    while((lineTxt = reader.readLine()) != null){
+                        if(lineTxt.contains("kwota:")){
+                            Scanner s = new Scanner(lineTxt);
+
+                            try{
+                                while(true){
+                                    String slowo = s.next();
+
+                                    if (slowo.contains("kwota:")){
+                                        String priceTxt = s.next();
+                                        double priceFF = Double.parseDouble(priceTxt);
+                                        sum += priceFF;
+                                        System.out.println("kwota: " + priceTxt);
+                                    }
+                                }
+                            }catch(java.util.NoSuchElementException e){
+                            }
+                        }
+                    }
+                    System.out.println("suma wydatkow: " + sum);
+
+                }catch (IOException e){
+                    System.out.println("nie odczytano: " + e.getMessage());
+                }finally{
+                    System.out.println("super");
+                }
+                break;
+
+            case 4:
+                System.out.println("\nend");
+                System.exit(0);
+                break;
+
+            default:
+                System.out.println("cos zrobiles zle");
+        }
+        sc.close();
+    }
+}
