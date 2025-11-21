@@ -4,20 +4,20 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
-        System.out.print("Podaj liczbę zestawów do wylosowania: ");
+        System.out.print("ile zestawow ma byc: ");
         int liczbaZestawow = 0;
 
         while (true) {
             try {
                 liczbaZestawow = Integer.parseInt(scanner.nextLine());
                 if (liczbaZestawow > 0) break;
-                System.out.println("Liczba musi być dodatnia. Spróbuj ponownie:");
+                System.out.println("musi byc dodatnia");
             } catch (NumberFormatException e) {
-                System.out.println("Błędna wartość. Spróbuj ponownie:");
+                System.out.println("blad");
             }
         }
 
-        int[][] zestawy = new int[liczbaZestawow][4];
+        int[][] zestawy = new int[liczbaZestawow][8];
 
         for (int i = 0; i < liczbaZestawow; i++) {
 
@@ -25,12 +25,12 @@ public class Main {
             for (int j = -15; j <= 15; j++) liczby.add(j);
 
             Collections.shuffle(liczby, random);
-            for (int k = 0; k < 4; k++) {
+            for (int k = 0; k < 8; k++) {
                 zestawy[i][k] = liczby.get(k);
             }
         }
 
-        System.out.println("\nWylosowane zestawy:");
+        System.out.println("\nWylosowane :");
 
         for (int i = 0; i < liczbaZestawow; i++) {
             System.out.print("Zestaw " + (i + 1) + ": ");
@@ -53,13 +53,13 @@ public class Main {
             }
         }
 
-        System.out.println("\nIlość wystąpień liczb od -15 do 15:");
+        System.out.println("wystapienia od -15 do 15:");
         for (int i = 0; i <= 30; i++) {
             System.out.println(i-15 + ": " + wystapienia[i]);
         }
 
-        System.out.println("\nLiczba liczb dodatnich:  " + liczbyDodatnie);
-        System.out.println("\nLiczba liczb ujemnych: " + liczbyUjemne);
+        System.out.println("Liczba dodatnich:  " + liczbyDodatnie);
+        System.out.println("Liczba ujemnych: " + liczbyUjemne);
         System.out.println("Liczba zer: " + zera);
         scanner.close();
     }
