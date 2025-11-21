@@ -76,10 +76,10 @@ public class Main{
                                     String slowo = s.next();
 
                                     if (slowo.contains("kwota:")){
-                                        String priceTxt = s.next();
+                                        String priceTxt = s.next().replace(",", "");
                                         double priceFF = Double.parseDouble(priceTxt);
                                         sum += priceFF;
-                                        System.out.println("kwota: " + priceTxt);
+                                        System.out.println("kwota: " + priceFF);
                                     }
                                 }
                             }catch(java.util.NoSuchElementException e){
