@@ -1,0 +1,19 @@
+zad1
+
+blok try to miejsce gdzie moze sie pojawic blad
+blok catch wlacza sie kiedy ten blad sie pojawi i mozna cos z nim zrobic
+blok finally wykonuje sie zawsze czy jest blad czy nie
+uzywa sie go glownie do sprzatania na koncu typu zamkniecie pliku albo polaczenia
+
+zad2
+
+dziedziczenie to to ze jedna klasa moze brac rzeczy z innej klasy
+dzieki temu nie trzeba pisac wszystkiego od zera
+latwiej sie potem rozbudowuje kod bo zmiany w klasie glownej sa widoczne tez w klasach ktore po niej dziedzicza
+
+zad3
+
+tablica ma staly rozmiar jak ja stworze na 5 elementow to ma 5 i koniec
+arraylist moze sie powiekszac albo zmniejszac
+arraylist jest dobra kiedy nie wiadomo ile bedzie elementow
+tablica jest dobra kiedy wiemy dokladnie ile ma byc danych
